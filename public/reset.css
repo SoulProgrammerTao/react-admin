@@ -25,7 +25,6 @@ h6 {
   margin: 0;
   padding: 0;
 }
-
 h1,
 h2,
 h3,
@@ -88,7 +87,7 @@ html, body {
   width: 100%;
 }
 
-#root {
+#root, .App {
   height: 100%;
   width: 100%;
 }
