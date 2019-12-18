@@ -1,21 +1,40 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button, Message } from 'antd';
 import "./login.scss";
 import logo from "../../assets/images/logo.png";
 import { login } from '../../api/login'
+import memoryStorage from "../../utils/memoryStorage";
+import { Redirect } from "react-router-dom";
+import localStorage from "../../utils/localStorage";
 
 class NormalLoginForm extends Component {
   handleSubmit = e => {
     e.preventDefault()
     const form = this.props.form
     form.validateFields(async (err, values) => {
-      const res = await login(values)
-      console.log(res)
+      if (!err) {
+        const res = await login(values)
+        if (!res.status) {
+          memoryStorage.userInfo = res.data
+          localStorage.setUser(res.data)
+          this.props.history.replace('/')
+        } else {
+          Message.error(res.msg)
+        }
+      }
     })
-
-  };
+  }
+  validatePassword (rule, value, callback) {
+    if (!value) return callback('请输入登陆密码')
+    if (value.length<4) return callback('登陆密码至少4位字符')
+    if (value.length>12) return callback('登陆密码最多12位字符')
+    if (!/^[a-zA-Z0-9_]+$/.test(value)) return callback('密码必须是英文、数字或下划线组成')
+    callback()
+  }
   render() {
     const { getFieldDecorator } = this.props.form
+    const userInfo = memoryStorage.userInfo
+    if (userInfo._id) return <Redirect to="/"/>
     return (
       <div className="login">
         <header>
@@ -27,7 +46,12 @@ class NormalLoginForm extends Component {
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Form.Item>
               {
-                getFieldDecorator('username', {rules: [{required: true, message: '请输入用户名'}]})(
+                getFieldDecorator('username', {rules: [
+                  {required: true, message: '请输入用户名'},
+                  {min: 4, message: '用户名至少4位字符'},
+                  {max: 12, message: '用户名最多12位字符'}
+                  ]})
+                (
                   <Input
                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                     placeholder="请输入用户名"
@@ -37,7 +61,7 @@ class NormalLoginForm extends Component {
             </Form.Item>
             <Form.Item>
               {
-                getFieldDecorator('password', {rules: [{required: true, message: '请输入密码'}]})(
+                getFieldDecorator('password', {rules: [{validator: this.validatePassword}]})(
                   <Input
                     prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                     type="password"
@@ -57,6 +81,6 @@ class NormalLoginForm extends Component {
     )
   }
 }
-const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(NormalLoginForm);
+const WrappedNormalLoginForm = Form.create()(NormalLoginForm);
 // ReactDOM.render(<WrappedNormalLoginForm />, mountNode);
 export default WrappedNormalLoginForm;
