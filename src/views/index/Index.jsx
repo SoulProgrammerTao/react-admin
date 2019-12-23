@@ -31,7 +31,7 @@ class Index extends Component {
         </Sider>
         <Layout>
           <Header/>
-          <Content style={{backgroundColor: '#fff'}}>
+          <Content style={{backgroundColor: '#f0f2f5'}}>
             <Switch>
               <Redirect from="/" exact to="/home"></Redirect>
               <Route path="/home" component={Home}/>
