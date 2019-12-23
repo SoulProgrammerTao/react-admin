@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Form, Icon, Input, Button, Message } from 'antd';
 import "./login.scss";
 import logo from "../../assets/images/logo.png";
-import { login } from '../../api/login'
+import { login } from '../../api'
 import memoryStorage from "../../utils/memoryStorage";
 import { Redirect } from "react-router-dom";
 import localStorage from "../../utils/localStorage";
 
-class NormalLoginForm extends Component {
+class Login extends Component {
   handleSubmit = e => {
     e.preventDefault()
     const form = this.props.form
@@ -81,6 +81,6 @@ class NormalLoginForm extends Component {
     )
   }
 }
-const WrappedNormalLoginForm = Form.create()(NormalLoginForm);
+const WrapLogin = Form.create()(Login);
 // ReactDOM.render(<WrappedNormalLoginForm />, mountNode);
-export default WrappedNormalLoginForm;
+export default WrapLogin;
