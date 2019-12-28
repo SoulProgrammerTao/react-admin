@@ -31,7 +31,7 @@ class Index extends Component {
         </Sider>
         <Layout>
           <Header/>
-          <Content style={{backgroundColor: '#f0f2f5'}}>
+          <Content style={{backgroundColor: '#f0f2f5', padding: '20px'}}>
             <Switch>
               <Redirect from="/" exact to="/home"></Redirect>
               <Route path="/home" component={Home}/>
@@ -46,7 +46,7 @@ class Index extends Component {
               {/* <Redirect to="/home"></Redirect> */}
             </Switch>
           </Content>
-          <Footer>Footer</Footer>
+          <Footer style={{textAlign: 'center',color: 'rgb(204, 204, 204)'}}>推荐使用谷歌浏览器，可以获得更佳页面操作体验</Footer>
         </Layout>
       </Layout>
     );
