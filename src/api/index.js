@@ -30,7 +30,7 @@ export const categoryAdd = data => Request('/manage/category/add', data, 'POST')
 /**
   修改分类
   data: {
-    parentId 父级ID
+    categoryId 父级ID
     categoryName 名称
   }
 **/
